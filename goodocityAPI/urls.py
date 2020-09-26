@@ -6,6 +6,7 @@ urlpatterns = [
 ]
 
 urlpatterns = [
-    url(r'^users$', views.create_user),
+    url(r'^create_user$', views.create_user),
+    url(r'^sign_up$', views.sign_up),
 ]
 

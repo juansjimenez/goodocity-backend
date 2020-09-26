@@ -36,11 +36,26 @@ def hero_list(request):
     
 @api_view(['POST'])
 def sign_up(request):
-    print(request)
-
-@api_view(["GET"])
-def create_user(request):
-    template = loader.get_template('users/index.html')
+    print(request.POST.dict())
+    template = loader.get_template('users/user.html')
+    data = request.POST.dict()
+    auth.create_user_with_email_and_password(data["email"], data["password"])
     return HttpResponse(template.render())
 
+def sign_in(request):
+    data = request.POST.dict()
+    try:
+        user = auth.sign_in_with_email_and_password(data["email"], data["password"])
+    except:
+        pass
 
+# View only for testing sign_up feature
+@api_view(["GET"])
+def create_user(request):
+    template = loader.get_template('users/sign_up.html')
+    return HttpResponse(template.render())
+
+@api_view(["GET"])
+def sign_out(request):
+    auth.current_user = None
+    return HttpResponse()
