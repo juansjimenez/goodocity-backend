@@ -15,11 +15,3 @@ def hero_list(request):
         heros = Hero.objects.all()
         heros_serializer = HeroSerializer(heros, many=True)
         return JsonResponse(heros_serializer.data, safe=False)
-    
-
-@api_view(['GET', 'POST', 'DELETE'])
-def hero_list(request):
-    if request.method == 'GET':
-        heros = Hero.objects.all()
-        heros_serializer = HeroSerializer(heros, many=True)
-        return JsonResponse(heros_serializer.data, safe=False)
