@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import psycopg2
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -86,16 +88,29 @@ WSGI_APPLICATION = 'goodocity.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'testdb',
-        'USER': 'postgres',
-        'PASSWORD': 'psql',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+
+if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'goodocity',
+            'USER': 'postgres',
+            'PASSWORD': 'good1234',
+            'HOST': '/cloudsql/goodocity:us-central1:goodb',
+        }
     }
-}
+
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'goodocity',
+            'USER': 'gaonuk',
+            'PASSWORD': 'hola',
+            'HOST': '127.0.0.1',
+            'PORT': '3336',
+        }
+    }
 
 
 # Password validation
@@ -132,6 +147,8 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
+# https://docs.djangoproject.com/en/2.1/howto/static-files/
+# Google App Engine: set static root for local static files
+# https://cloud.google.com/appengine/docs/flexible/python/serving-static-files
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'

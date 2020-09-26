@@ -5,8 +5,8 @@ from django.http import HttpResponse
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
-
-from .models import Hero
+import psycopg2
+from .models import Hero, AccountManager
 from .serializers import HeroSerializer
 from rest_framework.decorators import api_view
 import pyrebase
@@ -39,15 +39,27 @@ def sign_up(request):
     print(request.POST.dict())
     template = loader.get_template('users/user.html')
     data = request.POST.dict()
-    auth.create_user_with_email_and_password(data["email"], data["password"])
-    return HttpResponse(template.render())
+    try:
+        auth.create_user_with_email_and_password(data["email"], data["password"])
+        return HttpResponse(template.render())
+    except ValueError as err:
+        print(err)
+        return HttpResponse(template.render())
+    except:
+        print("There has been an error")
+        return HttpResponse(template.render())
 
 def sign_in(request):
     data = request.POST.dict()
     try:
-        user = auth.sign_in_with_email_and_password(data["email"], data["password"])
+        conn = psycopg2.connect(database="testdb", user="postgres", password="hola")
+        cur = conn.cursor()
+        cur.execute(f"SELECT * FROM Accounts WHERE email={data['email']};")
+        user = cur.fetchone()
+        print(user)
+        return HttpResponse()
     except:
-        pass
+        return HttpResponse()
 
 # View only for testing sign_up feature
 @api_view(["GET"])
@@ -59,3 +71,5 @@ def create_user(request):
 def sign_out(request):
     auth.current_user = None
     return HttpResponse()
+
+
