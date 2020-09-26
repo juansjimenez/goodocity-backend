@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import Hero
+from .models import Event
 
 
-class HeroSerializer(serializers.HyperlinkedModelSerializer):
+class EventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Hero
-        fields = ('name', 'alias')
+        model = Event
+        fields = ('id', 'name', 'description', 'venue', 'time')

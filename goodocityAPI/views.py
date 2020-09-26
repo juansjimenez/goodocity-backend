@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse
-
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 import psycopg2
-from .models import Hero, AccountManager
+from .models import Event, AccountManager
 from .serializers import HeroSerializer
 from rest_framework.decorators import api_view
 import pyrebase
@@ -28,12 +27,10 @@ firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 
 @api_view(['GET', 'POST', 'DELETE'])
-def hero_list(request):
+def event_list(request):
     if request.method == 'GET':
-        heros = Hero.objects.all()
-        heros_serializer = HeroSerializer(heros, many=True)
-        return JsonResponse(heros_serializer.data, safe=False)
-    
+        pass
+
 @api_view(['POST'])
 def sign_up(request):
     print(request.POST.dict())

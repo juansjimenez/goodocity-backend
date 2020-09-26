@@ -5,10 +5,12 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 # Create your models here.
 
 
-class Hero(models.Model):
+class Event(models.Model):
     name = models.CharField(max_length=60)
-    alias = models.CharField(max_length=60)
-    
+    description = models.CharField(max_length=140)
+    venue = models.CharField(max_length=60)
+    time = models.DateTimeField(verbose_name='time of event')
+
     def __str__(self):
         return self.name
 
