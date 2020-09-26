@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8081',
 )
@@ -94,7 +94,7 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'goodocity',
-            'USER': 'postgres',
+            'USER': 'gaonuk',
             'PASSWORD': 'good1234',
             'HOST': '/cloudsql/goodocity:us-central1:goodb',
         }
@@ -104,9 +104,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'goodocity',
+            'NAME': 'testdb',
             'USER': 'postgres',
-            'PASSWORD': 'psql',
+            'PASSWORD': 'hola',
             'HOST': '127.0.0.1',
             'PORT': '5432',
         }
