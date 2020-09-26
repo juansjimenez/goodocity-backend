@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Event, User
-from django.contrib.auth.admin import UserAdmin
+# from django.contrib.auth.admin import UserAdmin
 
 
 # class AccountAdmin(UserAdmin):
@@ -13,4 +13,5 @@ from django.contrib.auth.admin import UserAdmin
 #     fieldsets = ()
 
 
-admin.site.register(User, Event)
+admin.site.register(User)
+admin.site.register(Event)

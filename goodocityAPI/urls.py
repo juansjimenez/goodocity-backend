@@ -7,4 +7,3 @@ urlpatterns = [
     url(r'^create_user$', views.create_user),
     url(r'^sign_up$', views.sign_up),
 ]
-

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event
+from .models import Event, User
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):

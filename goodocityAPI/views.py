@@ -5,7 +5,7 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 import psycopg2
-from .models import User, Event, AccountManager
+from .models import User, Event
 from .serializers import EventSerializer, UserSerializer
 from rest_framework.decorators import api_view
 import pyrebase
@@ -26,17 +26,18 @@ firebase = pyrebase.initialize_app(config)
 
 auth = firebase.auth()
 
+
 @api_view(['GET', 'POST', 'DELETE'])
 def user_list(request):
     # Get list of all users, create - POST - a new user, DELETE all users.
     if request.method == 'GET':
-        events = User.objects.all()
-        serializer = UserSerializer(events, many=True)
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'POST':
-        event_data = JSONParser().parse(request)
-        serializer = UserSerializer(data=event_data)
+        user_data = JSONParser().parse(request)
+        serializer = UserSerializer(data=user_data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)

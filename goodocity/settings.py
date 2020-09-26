@@ -80,7 +80,7 @@ TEMPLATES = [
     },
 ]
 
-AUTH_USER_MODEL = 'goodocityAPI.Account'
+# AUTH_USER_MODEL = 'goodocityAPI.Account'
 
 WSGI_APPLICATION = 'goodocity.wsgi.application'
 
