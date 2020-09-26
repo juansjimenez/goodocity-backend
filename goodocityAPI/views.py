@@ -6,7 +6,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework import status
 import psycopg2
 from .models import Event, AccountManager
-from .serializers import HeroSerializer
+from .serializers import EventSerializer
 from rest_framework.decorators import api_view
 import pyrebase
 
@@ -29,7 +29,11 @@ auth = firebase.auth()
 @api_view(['GET', 'POST', 'DELETE'])
 def event_list(request):
     if request.method == 'GET':
-        pass
+        events = Event.objects.all()
+        
+        serializer = EventSerializer(events, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
 
 @api_view(['POST'])
 def sign_up(request):
