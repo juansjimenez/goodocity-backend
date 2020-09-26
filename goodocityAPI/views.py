@@ -17,7 +17,7 @@ config = {
   "databaseURL": "https://goodocity.firebaseio.com",
   "storageBucket": "goodocity.appspot.com",
   "projectId": "goodocity",
-  "serviceAccount": "goodocity-firebase-adminsdk-79ps7-a63550c8a4.json",
+#   "serviceAccount": "goodocity-firebase-adminsdk-79ps7-a63550c8a4.json",
   "messagingSenderId": "382652036053",
   "appId": "1:382652036053:web:e6d13708219b2cf1a4435c",
   "measurementId": "G-7JM6XVBRVD"
