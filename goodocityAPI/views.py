@@ -5,8 +5,8 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 import psycopg2
-from .models import Event, AccountManager
-from .serializers import EventSerializer
+from .models import User, Event, AccountManager
+from .serializers import EventSerializer, UserSerializer
 from rest_framework.decorators import api_view
 import pyrebase
 
@@ -25,6 +25,10 @@ config = {
 firebase = pyrebase.initialize_app(config)
 
 auth = firebase.auth()
+
+@api_view(['GET', 'POST', 'DELETE'])
+def user_list(request):
+    pass
 
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -45,7 +49,7 @@ def event_list(request):
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     if request.method == 'DELETE':
-        count = Tutorial.objects.all().delete()
+        count = Event.objects.all().delete()
         return JsonResponse({'message': '{} Events were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
 
 
@@ -77,9 +81,11 @@ def sign_up(request):
     try:
         auth.create_user_with_email_and_password(data["email"], data["password"])
         return HttpResponse(template.render())
+    
     except ValueError as err:
         print(err)
         return HttpResponse(template.render())
+    
     except:
         print("There has been an error")
         return HttpResponse(template.render())
@@ -94,15 +100,17 @@ def sign_in(request):
         user = cur.fetchone()
         print(user)
         return HttpResponse()
-    
+ 
     except:
         return HttpResponse()
+
 
 # View only for testing sign_up feature
 @api_view(["GET"])
 def create_user(request):
     template = loader.get_template('users/sign_up.html')
     return HttpResponse(template.render())
+
 
 @api_view(["GET"])
 def sign_out(request):
