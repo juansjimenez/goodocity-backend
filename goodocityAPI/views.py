@@ -9,17 +9,18 @@ from .models import User, Event
 from .serializers import EventSerializer, UserSerializer
 from rest_framework.decorators import api_view
 import pyrebase
+from goodocity.settings import DATABASES
 
 config = {
-  "apiKey": "AIzaSyA5Tywq4OAYsNi5m3QHPtCNDZr4blDLO3k",
-  "authDomain": "goodocity.firebaseapp.com",
-  "databaseURL": "https://goodocity.firebaseio.com",
-  "storageBucket": "goodocity.appspot.com",
-  "projectId": "goodocity",
-#   "serviceAccount": "goodocity-firebase-adminsdk-79ps7-a63550c8a4.json",
-  "messagingSenderId": "382652036053",
-  "appId": "1:382652036053:web:e6d13708219b2cf1a4435c",
-  "measurementId": "G-7JM6XVBRVD"
+    "apiKey": "AIzaSyA5Tywq4OAYsNi5m3QHPtCNDZr4blDLO3k",
+    "authDomain": "goodocity.firebaseapp.com",
+    "databaseURL": "https://goodocity.firebaseio.com",
+    "storageBucket": "goodocity.appspot.com",
+    "projectId": "goodocity",
+    #   "serviceAccount": "goodocity-firebase-adminsdk-79ps7-a63550c8a4.json",
+    "messagingSenderId": "382652036053",
+    "appId": "1:382652036053:web:e6d13708219b2cf1a4435c",
+    "measurementId": "G-7JM6XVBRVD"
 }
 
 firebase = pyrebase.initialize_app(config)
@@ -95,7 +96,8 @@ def sign_up(request):
     template = loader.get_template('users/user.html')
     data = request.POST.dict()
     try:
-        auth.create_user_with_email_and_password(data["email"], data["password"])
+        auth.create_user_with_email_and_password(
+            data["email"], data["password"])
         return HttpResponse(template.render())
     
     except ValueError as err:
@@ -107,21 +109,23 @@ def sign_up(request):
         return HttpResponse(template.render())
 
 
+@api_view(["GET"])
 def sign_in(request):
     data = request.POST.dict()
+    template = loader.get_template('users/sign_in.html')
     try:
-        conn = psycopg2.connect(database="testdb", user="postgres", password="hola")
-        cur = conn.cursor()
-        cur.execute(f"SELECT * FROM Accounts WHERE email={data['email']};")
-        user = cur.fetchone()
-        print(user)
-        return HttpResponse()
- 
+        print("Starting connection to DB")
+        user = User.objects.get()
+        print("Connection Succesful!")
+        return HttpResponse(template.render())
     except:
-        return HttpResponse()
+        print("Connection Failed!")
+        return HttpResponse(template.render())
 
 
 # View only for testing sign_up feature
+
+
 @api_view(["GET"])
 def create_user(request):
     template = loader.get_template('users/sign_up.html')
