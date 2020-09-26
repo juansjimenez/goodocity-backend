@@ -14,8 +14,8 @@ class Hero(models.Model):
 class User(models.Model):
     name = models.CharField(max_length=60)
     address = models.CharField(max_length=60)
-    email = models.EmailField()
-    password = models.CharField()
+    email = models.EmailField(max_length=60)
+    password = models.CharField(max_length=60)
 
     def __str__(self):
         return self.name
