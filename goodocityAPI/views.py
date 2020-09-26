@@ -28,7 +28,23 @@ auth = firebase.auth()
 
 @api_view(['GET', 'POST', 'DELETE'])
 def user_list(request):
-    pass
+    # Get list of all users, create - POST - a new user, DELETE all users.
+    if request.method == 'GET':
+        events = User.objects.all()
+        serializer = UserSerializer(events, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        event_data = JSONParser().parse(request)
+        serializer = UserSerializer(data=event_data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == 'DELETE':
+        count = User.objects.all().delete()
+        return JsonResponse({'message': '{} Users were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -36,7 +52,6 @@ def event_list(request):
     # Get list of all events, create - POST - a new event, DELETE all events.
     if request.method == 'GET':
         events = Event.objects.all()
-
         serializer = EventSerializer(events, many=True)
         return JsonResponse(serializer.data, safe=False)
 
