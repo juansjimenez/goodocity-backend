@@ -105,10 +105,10 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'goodocity',
-            'USER': 'gaonuk',
-            'PASSWORD': 'hola',
+            'USER': 'postgres',
+            'PASSWORD': 'psql',
             'HOST': '127.0.0.1',
-            'PORT': '3336',
+            'PORT': '5432',
         }
     }
 

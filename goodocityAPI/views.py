@@ -26,13 +26,47 @@ firebase = pyrebase.initialize_app(config)
 
 auth = firebase.auth()
 
+
 @api_view(['GET', 'POST', 'DELETE'])
 def event_list(request):
+    # Get list of all events, create - POST - a new event, DELETE all events.
     if request.method == 'GET':
         events = Event.objects.all()
-        
+
         serializer = EventSerializer(events, many=True)
         return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        event_data = JSONParser().parse(request)
+        serializer = EventSerializer(data=event_data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == 'DELETE':
+        count = Tutorial.objects.all().delete()
+        return JsonResponse({'message': '{} Events were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def event_specific(request, id):
+    # Generate requests for a specific event by id.
+    try:
+        event = Event.objects.get(pk=id)
+    except Event.DoesNotExist:
+        return JsonResponse({'message': 'The event does not exist'}, status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == 'GET':
+        serializer = EventSerializer(event)
+        return JsonResponse(serializer.data)
+
+    elif request.method == 'DELETE':
+        event.delete()
+        return JsonResponse({'message': 'Event was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)  
+    
+    elif request.method == 'PUT':
+        pass
 
 
 @api_view(['POST'])
@@ -50,6 +84,7 @@ def sign_up(request):
         print("There has been an error")
         return HttpResponse(template.render())
 
+
 def sign_in(request):
     data = request.POST.dict()
     try:
@@ -59,6 +94,7 @@ def sign_in(request):
         user = cur.fetchone()
         print(user)
         return HttpResponse()
+    
     except:
         return HttpResponse()
 
@@ -72,5 +108,3 @@ def create_user(request):
 def sign_out(request):
     auth.current_user = None
     return HttpResponse()
-
-
