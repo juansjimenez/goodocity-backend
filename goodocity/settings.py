@@ -27,7 +27,7 @@ SECRET_KEY = '$80oi4c=%$g!9@e#h462ez!%fd(-$ieaqq=k9zia@a_(*(9dsu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['goodocity.uc.r.appspot.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
