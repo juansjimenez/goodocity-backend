@@ -95,7 +95,7 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'goodocity',
             'USER': 'gaonuk',
-            'PASSWORD': 'good1234',
+            'PASSWORD': 'hola',
             'HOST': '/cloudsql/goodocity:us-central1:goodb',
         }
     }
@@ -107,8 +107,7 @@ else:
             'NAME': 'goodocity',
             'USER': 'gaonuk',
             'PASSWORD': 'hola',
-            'HOST': '127.0.0.1',
-            'PORT': '3336',
+            'HOST': '/cloudsql/goodocity:us-central1:goodb',
         }
     }
 

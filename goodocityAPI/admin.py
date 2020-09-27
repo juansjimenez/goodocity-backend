@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Event, User
+from .models import Event, User, Community, Category
 # from django.contrib.auth.admin import UserAdmin
 
 
@@ -15,3 +15,5 @@ from .models import Event, User
 
 admin.site.register(User)
 admin.site.register(Event)
+admin.site.register(Community)
+admin.site.register(Category)

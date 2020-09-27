@@ -99,7 +99,7 @@ def category_list(request):
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
         cat_data = JSONParser().parse(request)
-        serializer = CommunitySerializer(data=cat_data)
+        serializer = CategorySerializer(data=cat_data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, static=status.HTTP_201_CREATED)
@@ -205,7 +205,7 @@ def categories_events(request, id):
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(["GET"])
-def events_comminties(request, id):
+def events_communities(request, id):
     try:
         community = Community.objects.get(pk=id)
     except Community.DoesNotExist:
@@ -311,14 +311,14 @@ def add_member(request, cid, uid):
     return JsonResponse({'message': 'The participant was added correctly'}, status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def sign_in(request):
     data = JSONParser().parse(request)
     try:
         user = User.objects.get(email=data['email'])
         serializer = UserSerializer(user)
         auth.sign_in_with_email_and_password(data['email'], data['password'])
-        return JsonResponse(serializer)
+        return JsonResponse(serializer.data, safe=False)
     except User.DoesNotExist:
         return JsonResponse({'message': 'The user does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
