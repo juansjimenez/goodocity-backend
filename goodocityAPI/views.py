@@ -55,12 +55,12 @@ def event_list(request):
     # Get list of all events, create - POST - a new event, DELETE all events.
     if request.method == 'GET':
         events = Event.objects.all()
-        serializer = EventSerializer(events, many=True)
+        serializer = EventSerializer(events, many=True, context={'request': request})
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'POST':
         event_data = JSONParser().parse(request)
-        serializer = EventSerializer(data=event_data)
+        serializer = EventSerializer(data=event_data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
@@ -76,11 +76,11 @@ def com_list(request):
     # Get list of all communities, create - POST - a new community
     if request.method == 'GET':
         commus = Community.objects.all()
-        serializer = CommunitySerializer(commus, many=True)
+        serializer = CommunitySerializer(commus, many=True, context={'request': request})
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
         com_data = JSONParser().parse(request)
-        serializer = CommunitySerializer(data=com_data)
+        serializer = CommunitySerializer(data=com_data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, static=status.HTTP_201_CREATED)
@@ -109,6 +109,8 @@ def category_list(request):
         count = Category.objects.all().delete()
         return JsonResponse({'message': f'{count[0]} Categories were deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['GET'])
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def event_specific(request, id):
@@ -119,7 +121,7 @@ def event_specific(request, id):
         return JsonResponse({'message': 'The event does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = EventSerializer(event)
+        serializer = EventSerializer(event, context={'request': request})
         return JsonResponse(serializer.data)
 
     elif request.method == 'DELETE':
@@ -128,7 +130,7 @@ def event_specific(request, id):
 
     elif request.method == 'PUT':
         event_data = JSONParser().parse(request)
-        event_serializer = EventSerializer(event, data=event_data)
+        event_serializer = EventSerializer(event, data=event_data, context={'request': request})
         if event_serializer.is_valid():
             event_serializer.save()
             return JsonResponse(event_serializer.data)
@@ -143,7 +145,7 @@ def com_especific(request, id):
             return JsonResponse({'message': 'The community does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
         if request.method == 'GET':
-            serializer = CommunitySerializer(community)
+            serializer = CommunitySerializer(community, context={'request': request})
             return JsonResponse(serializer.data)
 
         elif request.method == 'DELETE':
@@ -152,7 +154,7 @@ def com_especific(request, id):
 
         elif request.method == 'PUT':
             com_data = JSONParser().parse(request)
-            serializer = CommunitySerializer(community, data=com_data)
+            serializer = CommunitySerializer(community, data=com_data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)
@@ -190,7 +192,7 @@ def categories_communities(request, id):
         return JsonResponse({'message': 'The category does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
     communities = Community.objects.filter(categories__id=id)
-    serializer = CommunitySerializer(communities, many=True)
+    serializer = CommunitySerializer(communities, many=True, context={'request': request})
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(["GET"])
@@ -199,9 +201,8 @@ def categories_events(request, id):
         category = Category.objects.get(pk=id)
     except Category.DoesNotExist:
         return JsonResponse({'message': 'The category does not exist'}, status=status.HTTP_404_NOT_FOUND)
-
     events = Event.objects.filter(categories__id=id)
-    serializer = EventSerializer(events, many=True)
+    serializer = EventSerializer(events, many=True, context={'request': request})
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(["GET"])
@@ -212,20 +213,20 @@ def events_communities(request, id):
         return JsonResponse({'message': 'The community does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
     events = Event.objects.filter(community__id=id)
-    serializer = EventSerializer(events, many=True)
+    serializer = EventSerializer(events, many=True, context={'request': request})
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(['GET'])
 def venue_communities(request, venue):
     communities = Community.objects.filter(venue__startswith=venue)
-    serializer = CommunitySerializer(communities, many=True)
+    serializer = CommunitySerializer(communities, many=True, context={'request': request})
     return JsonResponse(serializer.data, safe=False)
 
 
 @api_view(["GET"])
 def venue_events(request, venue):
     events = Event.objects.filter(venue__startswith=venue)
-    serializer = EventSerializer(events, many=True)
+    serializer = EventSerializer(events, many=True, context={'request': request})
     return JsonResponse(serializer.data, safe=False)
 
 
@@ -253,7 +254,7 @@ def get_members(request, id):
     serializer = UserSerializer(members, many=True)
     return JsonResponse(serializer.data, safe=False)
 
-@api_view(["PUT"])
+@api_view(["GET"])
 def add_participant(request, eid, uid):
     try:
         event = Event.objects.get(pk=eid)
@@ -268,7 +269,7 @@ def add_participant(request, eid, uid):
     return JsonResponse({'message': 'The participant was added correctly'}, status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['PUT'])
+@api_view(['GET'])
 def remove_participant(request, eid, uid):
     try:
         event = Event.objects.get(pk=eid)
@@ -282,7 +283,7 @@ def remove_participant(request, eid, uid):
     event.participants.remove(participant)
     return JsonResponse({'message': 'The participant was removed correctly'}, status=status.HTTP_204_NO_CONTENT)
 
-@api_view(['PUT'])
+@api_view(['GET'])
 def remove_member(request, cid, uid):
     try:
         community = Community.objects.get(pk=cid)
@@ -296,7 +297,7 @@ def remove_member(request, cid, uid):
     community.participants.remove(member)
     return JsonResponse({'message': 'The participant was removed correctly'}, status=status.HTTP_204_NO_CONTENT)
 
-@api_view(["PUT"])
+@api_view(["GET"])
 def add_member(request, cid, uid):
     try:
         community = Community.objects.get(pk=cid)
