@@ -11,4 +11,5 @@ handlers:
 # files defined.
 - url: /.*
   script: auto
+
 # [END django_app]
