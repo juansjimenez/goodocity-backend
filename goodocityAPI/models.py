@@ -31,6 +31,8 @@ class Community(models.Model):
     venue = models.CharField(max_length=60)
     participants = models.ManyToManyField(User, blank=True)
     categories = models.ManyToManyField(Category, blank=True)
+    picture = models.URLField(default="https://marketplace.canva.com/EADzkaU9XJI/1/0/400w/canva-red-yellow-black-white-wavy-female-woman-girl-teen-portrait-simplified-illustration-square-laptop-sticker-_czOVX8ezRU.jpg")
+
 
     def __str__(self):
         return self.name
@@ -44,6 +46,8 @@ class Event(models.Model):
     participants = models.ManyToManyField(User, blank=True)
     categories = models.ManyToManyField(Category, blank=True)
     community = models.ForeignKey(Community, on_delete=models.CASCADE, null=True)
+    picture = models.URLField(default="https://marketplace.canva.com/EADzkaU9XJI/1/0/400w/canva-red-yellow-black-white-wavy-female-woman-girl-teen-portrait-simplified-illustration-square-laptop-sticker-_czOVX8ezRU.jpg")
+
 
     def __str__(self):
         return self.name

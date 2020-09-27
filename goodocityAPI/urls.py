@@ -20,7 +20,9 @@ urlpatterns = [
     path('community/member/<int:cid>/<int:uid>', views.add_member),
     path('community/remove/<int:cid>/<int:uid>', views.remove_member),
     path('event/participant/<int:eid>/<int:uid>', views.add_participant),
-    path('event/remove/<int:eid>/<int:uid>$', views.remove_participant),
+    path('event/remove/<int:eid>/<int:uid>', views.remove_participant),
+    path('events/search', views.search_events),
+    path('communities/search', views.search_communities),
     url(r'^sign_in$', views.sign_in),
     url(r'^sign_out$', views.sign_out),
     
