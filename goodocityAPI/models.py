@@ -11,12 +11,29 @@ class User(models.Model):
     username = models.CharField(max_length=30, unique=True)
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
     last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
+    picture = models.URLField(default="https://marketplace.canva.com/EADzkaU9XJI/1/0/400w/canva-red-yellow-black-white-wavy-female-woman-girl-teen-portrait-simplified-illustration-square-laptop-sticker-_czOVX8ezRU.jpg")
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', ]
+    REQUIRED_FIELDS = ['username', 'name', ]
 
     def __str__(self):
         return self.email
+
+class Category(models.Model):
+    name = models.CharField(max_length=60, unique=True)
+
+    def __str__(self):
+        return self.name
+
+class Community(models.Model):
+    name = models.CharField(max_length=60, unique=True)
+    description = models.CharField(max_length=140)
+    venue = models.CharField(max_length=60)
+    participants = models.ManyToManyField(User, blank=True)
+    categories = models.ManyToManyField(Category, blank=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Event(models.Model):
@@ -24,9 +41,14 @@ class Event(models.Model):
     description = models.CharField(max_length=140)
     venue = models.CharField(max_length=60)
     time = models.DateTimeField(verbose_name='time of event')
+    participants = models.ManyToManyField(User, blank=True)
+    categories = models.ManyToManyField(Category, blank=True)
+    community = models.ForeignKey(Community, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name
+
+
 
 
 # class AccountManager(BaseUserManager):

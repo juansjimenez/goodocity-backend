@@ -1,14 +1,29 @@
 from rest_framework import serializers
-from .models import Event, User
+from .models import Event, User, Community, Category
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'password', 'username', 'date_joined', 'last_login')
+        fields = ('id', 'email', 'password', 'name',
+                  'username', 'date_joined', 'last_login')
 
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Event
-        fields = ('id', 'name', 'description', 'venue', 'time')
+        fields = ('id', 'name', 'description', 'venue',
+                  'time', 'participants', 'categories', 'community')
+
+
+class CommunitySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Community
+        fields = ('id', 'name', 'description',
+                  'venue', 'participants', 'categories')
+
+
+class CategorySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Category
+        field = ('id', 'name')
