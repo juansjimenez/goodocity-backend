@@ -17,4 +17,4 @@ Back-end for a ShellHacks Hackathon app idea made with Django.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
