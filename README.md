@@ -2,7 +2,7 @@
 
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://mit-license.org/)
 
-Back-end for a ShellHacks Hackathon app idea made with Django.
+Back-end for a ShellHacks Hackathon app idea. Made with Django.
 
 ## Built With
 
