@@ -6,9 +6,9 @@ Back-end for a ShellHacks Hackathon app idea. Made with Django.
 
 ## Built With
 
-* [Python](https://www.python.org/) - Programming language
+* [Python](https://www.python.org/) - Programming Language
 * [Django](https://www.djangoproject.com/) - Python Framework
-* [Postgresql](https://www.postgresql.org/) - SQL database engine
+* [Postgresql](https://www.postgresql.org/) - SQL Database Engine
 
 ## Authors
 
