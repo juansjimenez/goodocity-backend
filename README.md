@@ -12,7 +12,7 @@ Back-end for a ShellHacks Hackathon app idea. Made with Django.
 
 ## Authors
 
-* **@Juan379** 
+* **@juansjimenez** 
 * **@Gaonuk**
 
 ## License
